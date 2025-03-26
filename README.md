@@ -15,6 +15,7 @@ Mening RasmdanSo'z dasturim
 - AlerDialog
 - Activity
 - MediaPlayer
+- MVP arxitekturni pattern
 
 ## 📸 Skrinshot
 <p float="left">
