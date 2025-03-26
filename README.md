@@ -24,7 +24,7 @@ Mening RasmdanSo'z dasturim
   <img src="https://drive.google.com/uc?export=view&id=1TMVXXW9q8qEXlke_kvoVd7lI9vX9LSk2" width="10%" />
    <img src="https://drive.google.com/uc?export=view&id=15FapoiYOy7_dNKfOxDglhpj14VfPMWun" width="10%" />
   <img src="https://drive.google.com/uc?export=view&id=1IlnWjjxJWC4eT690Z1tS0pekRwoIKbBP" width="10%" />
-  <img src="https://drive.google.com/uc?export=view&id=168fihZ3CI72jDEMcAMHPyp_zIZ467Me" width="10%" />
+  <img src="https://drive.google.com/uc?export=view&id=168fihZ3CI72jDEMcAMHPyp_zIZ467Me7" width="10%" />
 <img src="https://drive.google.com/uc?export=view&id=1OZ-F11D8gWfrSTDwEe7zECcNB2P4E66X" width="10%" />
    <img src="https://drive.google.com/uc?export=view&id=1y87nDSdhPqN68H8IPDqbnnnKwUNSi4lO" width="10%" />
   <img src="https://drive.google.com/uc?export=view&id=1p_aFnf42S49WMJkYgYWW0QpPfD64qsIm" width="10%" />
@@ -36,4 +36,4 @@ Mening RasmdanSo'z dasturim
 1.Repozitoriyni klonlash:
 
 ```bash
-https://github.com/JavohirOromov/BlockShuffle15.git
+https://github.com/JavohirOromov/RasmdanSoz.git
