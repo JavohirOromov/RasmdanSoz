@@ -125,6 +125,7 @@ public class GamePresenter implements GameContract.Presenter {
             view.setLevel("Level " + (this.index + 1));
             storage.saveIndex(this.index);
             storage.saveCoin(this.coin);
+            view.showInitialButton(model.getQuestionByIndex(this.index).getAnswer().length());
         }
     }
     @Override
