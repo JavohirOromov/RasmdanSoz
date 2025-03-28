@@ -23,6 +23,7 @@ public class DeleteVariantDialog extends AlertDialog {
         super(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_delete_variant,null,false);
         setView(view);
+        setCancelable(false);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         getWindow().getAttributes().windowAnimations = R.style.CustomDialogAnim;
         noButton = view.findViewById(R.id.no);

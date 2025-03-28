@@ -26,6 +26,7 @@ public class HelpDialog extends AlertDialog {
         super(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_help,null,false);
         setView(view);
+        setCancelable(false);
         Objects.requireNonNull(getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
         getWindow().getAttributes().windowAnimations = R.style.CustomDialogAnim;
         noButton = view.findViewById(R.id.no);

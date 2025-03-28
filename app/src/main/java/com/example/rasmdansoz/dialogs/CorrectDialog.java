@@ -31,6 +31,7 @@ public class CorrectDialog extends AlertDialog {
         super(context);
         View view = LayoutInflater.from(context).inflate(R.layout.dialog,null,false);
         setView(view);
+        setCancelable(false);
         getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         getWindow().getAttributes().windowAnimations = R.style.CustomDialogAnim;
         exit = view.findViewById(R.id.exit);

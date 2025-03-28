@@ -29,6 +29,7 @@ public class QuitDialog extends AlertDialog {
 
         View view = LayoutInflater.from(context).inflate(R.layout.dialog_quit, null);
         setView(view);
+        setCancelable(false);
         Objects.requireNonNull(getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
         getWindow().getAttributes().windowAnimations = R.style.CustomDialogAnim;
         noBtn = view.findViewById(R.id.no);
