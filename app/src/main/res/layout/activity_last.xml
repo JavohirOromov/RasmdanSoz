@@ -20,12 +20,13 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="You Finished All Levels"
+        android:text="Siz barcha darajalarni tugatdingiz"
         android:textStyle="bold"
         android:fontFamily="@font/prototype"
         android:textSize="36sp"
         android:textColor="#FFEB3B"
         android:layout_gravity="center_horizontal"
+        android:textAlignment="center"
         />
 
 <LinearLayout
@@ -34,17 +35,17 @@
     android:orientation="vertical"
     android:gravity="center"
     >
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/restart_button"
         android:layout_width="180dp"
-        android:layout_height="60dp"
+        android:layout_height="70dp"
         android:background="@drawable/bg_last"
-        android:text="Restart"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:textAllCaps="false"
         android:fontFamily="@font/prototype"
-        />
+        android:text="Qayta boshlash"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
 
     <Space
         android:layout_width="match_parent"
@@ -55,7 +56,7 @@
         android:layout_width="180dp"
         android:layout_height="60dp"
         android:background="@drawable/bg_last"
-        android:text="Menu"
+        android:text="Menyu"
         android:textSize="20sp"
         android:textColor="@color/white"
         android:textAllCaps="false"

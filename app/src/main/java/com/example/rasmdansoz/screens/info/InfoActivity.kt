@@ -3,6 +3,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.rasmdansoz.R
 import com.example.rasmdansoz.screens.start.StartActivity
 
@@ -10,6 +11,7 @@ class InfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
+       // window.statusBarColor = ContextCompat.getColor(this, R.color.black)
         findViewById<ImageView>(R.id.back).setOnClickListener {
             val intent = Intent(this, StartActivity::class.java)
             startActivity(intent)

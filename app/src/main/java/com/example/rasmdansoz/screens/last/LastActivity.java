@@ -20,7 +20,7 @@ public class LastActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
+      //  getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
         setContentView(R.layout.activity_last);
         loadViews();
         restart.setOnClickListener(view -> {

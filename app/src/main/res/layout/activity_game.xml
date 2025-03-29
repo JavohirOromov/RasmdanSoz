@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="Level 1"
+            android:text="Daraja 1"
             android:textColor="@color/white"
             android:textSize="25dp"
             android:textStyle="bold" />

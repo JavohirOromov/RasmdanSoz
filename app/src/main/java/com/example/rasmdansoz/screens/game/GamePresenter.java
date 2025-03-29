@@ -42,7 +42,7 @@ public class GamePresenter implements GameContract.Presenter {
         this.index = storage.getIndex();
         this.coin = storage.getCoin();
         view.setCoin(this.coin);
-        view.setLevel("Level " + (this.index + 1));
+        view.setLevel("Daraja" + (this.index + 1));
         view.showQuestionImage(model.getQuestionByIndex(this.index).getImage());
         _sbAnswer = new StringBuilder(Objects.requireNonNull(storage.getAnswer()));
         _sbVariant = new StringBuilder(Objects.requireNonNull(storage.getVariant()));
@@ -154,7 +154,7 @@ public class GamePresenter implements GameContract.Presenter {
         this.index++;
         showQuestion();
         if (MAX_COUNT > this.index) {
-            view.setLevel("Level " + (this.index + 1));
+            view.setLevel("Daraja " + (this.index + 1));
             view.showInitialButton(model.getQuestionByIndex(this.index).getAnswer().length());
             this.list.clear();
         }

@@ -22,9 +22,11 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.rasmdansoz.R;
 import com.example.rasmdansoz.dialogs.CorrectDialog;
 import com.example.rasmdansoz.dialogs.DeleteVariantDialog;
+import com.example.rasmdansoz.dialogs.GameDialog;
 import com.example.rasmdansoz.dialogs.HelpDialog;
 import com.example.rasmdansoz.screens.last.LastActivity;
 import com.example.rasmdansoz.screens.start.StartActivity;
+import com.example.rasmdansoz.storage.LocalStorage;
 import com.google.android.material.card.MaterialCardView;
 
 import java.util.ArrayList;
@@ -41,6 +43,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private CorrectDialog correctDialog;
     private HelpDialog helpDialog;
     private DeleteVariantDialog deleteDialog;
+    private GameDialog gameDialog;
     private TextView coinText;
     private TextView levelText;
     private ImageView help, delete;
@@ -50,20 +53,37 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     private MediaPlayer soundAnswer;
     private MediaPlayer soundWrong;
     private MediaPlayer soundVariant;
+    private LocalStorage storage = LocalStorage.Companion.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
+        gameDialog = new GameDialog(this);
+        int index = getIntent().getIntExtra("id", 0);
 
-        int index = getIntent().getIntExtra("id",0);
-        loadViews();
-        addClickEvents();
-        if (index == 1){
-            presenter = new GamePresenter(this,index);
-        }else {
-            presenter = new GamePresenter(this);
+        if (index == 1) {
+            loadViews();
+            presenter = new GamePresenter(this, index);
+            addClickEvents();
+        } else {
+            if (storage.getIndex() == 0) {
+                loadViews();
+                presenter = new GamePresenter(this);
+                addClickEvents();
+            } else {
+                gameDialog.show();
+                gameDialog.setYesButtonClickListener(() -> {
+                    loadViews();
+                    presenter = new GamePresenter(this);
+                    addClickEvents();
+                });
+                gameDialog.setNoButtonClickListener(() -> {
+                    Intent intent = new Intent(this, StartActivity.class);
+                    startActivity(intent);
+                    gameDialog.dismiss();
+                });
+            }
         }
     }
 
@@ -359,6 +379,10 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     protected void onPause() {
         super.onPause();
-        presenter.save();
+        if (presenter != null) {
+            presenter.save();
+        } else {
+            Log.e("GameActivity", "Presenter is null in onPause!");
+        }
     }
 }

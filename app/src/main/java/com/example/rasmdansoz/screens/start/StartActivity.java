@@ -17,15 +17,26 @@ import com.example.rasmdansoz.R;
 import com.example.rasmdansoz.dialogs.QuitDialog;
 import com.example.rasmdansoz.screens.game.GameActivity;
 import com.example.rasmdansoz.screens.info.InfoActivity;
+import com.example.rasmdansoz.storage.LocalStorage;
 
 public class StartActivity extends AppCompatActivity {
     private QuitDialog quitDialog;
+    private LocalStorage storage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
         quitDialog = new QuitDialog(this);
+        storage = LocalStorage.Companion.getInstance();
+
+        AppCompatButton resume = findViewById(R.id.resume);
+
+        if (storage.getIndex() == 0){
+            resume.setVisibility(View.GONE);
+
+        }else {
+            resume.setVisibility(View.VISIBLE);
+        }
         findViewById(R.id.start).setOnClickListener(view -> {
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
@@ -33,7 +44,7 @@ public class StartActivity extends AppCompatActivity {
         findViewById(R.id.quit).setOnClickListener(view -> {
             quitDialog.show();
         });
-        findViewById(R.id.resume).setOnClickListener(v -> {
+       resume.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("id",1);
             startActivity(intent);
