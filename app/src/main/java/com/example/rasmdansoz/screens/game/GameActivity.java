@@ -54,14 +54,8 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // EdgeToEdge.enable(this);
         setContentView(R.layout.activity_game);
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
 
         int index = getIntent().getIntExtra("id",0);
         loadViews();
@@ -72,6 +66,15 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             presenter = new GamePresenter(this);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, StartActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
     @SuppressLint("WrongViewCast")
     private void loadViews() {
         back = findViewById(R.id.back);
@@ -353,4 +356,9 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             }
         }
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.save();
     }
+}

@@ -65,5 +65,6 @@ public interface GameContract {
         void clickImage3();
         void clickImage4();
         void clickImage();
+        void save();
     }
 }

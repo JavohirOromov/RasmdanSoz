@@ -16,22 +16,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.rasmdansoz.R;
 import com.example.rasmdansoz.dialogs.QuitDialog;
 import com.example.rasmdansoz.screens.game.GameActivity;
+import com.example.rasmdansoz.screens.info.InfoActivity;
 
 public class StartActivity extends AppCompatActivity {
-
     private QuitDialog quitDialog;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // EdgeToEdge.enable(this);
         setContentView(R.layout.activity_start);
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-//            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-//            return insets;
-//        });
-        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.white));
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.black));
         quitDialog = new QuitDialog(this);
         findViewById(R.id.start).setOnClickListener(view -> {
             Intent intent = new Intent(this, GameActivity.class);
@@ -43,6 +36,10 @@ public class StartActivity extends AppCompatActivity {
         findViewById(R.id.resume).setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("id",1);
+            startActivity(intent);
+        });
+        findViewById(R.id.info).setOnClickListener(v ->{
+            Intent intent = new Intent(this, InfoActivity.class);
             startActivity(intent);
         });
         quitDialog.setYesBtnClickListener(() -> {

@@ -9,6 +9,7 @@ import com.example.rasmdansoz.storage.LocalStorage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 /**
  * Creator: Javohir Oromov
@@ -25,24 +26,53 @@ public class GamePresenter implements GameContract.Presenter {
     private int coin;
     private List<Integer> list = new ArrayList<>();
     private LocalStorage storage = LocalStorage.Companion.getInstance();
+
     public GamePresenter(GameContract.View view) {
         this.view = view;
         this.model = new GameModel();
         showQuestion();
-        Log.d("TTT","1 ta");
     }
 
-    public GamePresenter(GameContract.View view, int index){
+    public GamePresenter(GameContract.View view, int index) {
         this.view = view;
         this.model = new GameModel();
         setStorage();
-        showQuestion();
     }
-    private void setStorage(){
+    private void setStorage() {
         this.index = storage.getIndex();
         this.coin = storage.getCoin();
         view.setCoin(this.coin);
         view.setLevel("Level " + (this.index + 1));
+        view.showQuestionImage(model.getQuestionByIndex(this.index).getImage());
+        _sbAnswer = new StringBuilder(Objects.requireNonNull(storage.getAnswer()));
+        _sbVariant = new StringBuilder(Objects.requireNonNull(storage.getVariant()));
+        Log.d("TTT","" + _sbAnswer);
+        updateUIWithStoredAnswer();
+        restoreBackgroundColors();
+        updateVariantButtons();
+    }
+    private void updateVariantButtons() {
+        view.showVariant(_sbVariant.toString());
+
+        for (int i = 0; i < _sbVariant.length(); i++) {
+            if (_sbVariant.charAt(i) == '*') {
+                view.hideVariantButton(i);
+            }
+        }
+    }
+    private void updateUIWithStoredAnswer() {
+        QuestionData data = model.getQuestionByIndex(this.index);
+        view.showAnswerButtonByLength(data.getAnswer().length());
+        for (int i = 0; i < _sbAnswer.length(); i++) {
+            char ch = _sbAnswer.charAt(i);
+            if (ch != '#') {
+                view.selectUserAnswer(ch, i);
+            }
+        }
+    }
+    private void restoreBackgroundColors() {
+        this.list = storage.getCorrectAnswerIndexes();
+        view.setCorrectBackground(list);
     }
     private void showQuestion() {
         if (index < MAX_COUNT) {
@@ -85,6 +115,7 @@ public class GamePresenter implements GameContract.Presenter {
         view.showInitialButton(model.getQuestionByIndex(this.index).getAnswer().length());
         view.setCorrectBackground(list);
     }
+
     @Override
     public void clickVariantButton(int index) {
         int answerIndex = _sbAnswer.indexOf("#");
@@ -96,10 +127,10 @@ public class GamePresenter implements GameContract.Presenter {
             view.selectUserAnswer(ch, answerIndex);
             view.startSoundVariant();
             if (!_sbAnswer.toString().contains("#")) {
-                if (!_sbAnswer.toString().equals(model.getQuestionByIndex(this.index).getAnswer())){
+                if (!_sbAnswer.toString().equals(model.getQuestionByIndex(this.index).getAnswer())) {
                     view.showWrongBackground(model.getQuestionByIndex(this.index).getAnswer().length());
                     view.startSoundWrong();
-                }else {
+                } else {
                     coin = coin + 30;
                     view.setCoin(coin);
                     view.showCorrectDialog();
@@ -107,6 +138,7 @@ public class GamePresenter implements GameContract.Presenter {
             }
         }
     }
+
     @Override
     public void clickBack() {
         view.openStartScreen();
@@ -121,21 +153,23 @@ public class GamePresenter implements GameContract.Presenter {
     public void clickDialogNextButton() {
         this.index++;
         showQuestion();
-        if (MAX_COUNT > this.index){
+        if (MAX_COUNT > this.index) {
             view.setLevel("Level " + (this.index + 1));
-            storage.saveIndex(this.index);
-            storage.saveCoin(this.coin);
             view.showInitialButton(model.getQuestionByIndex(this.index).getAnswer().length());
+            this.list.clear();
         }
     }
+
     @Override
     public void clickHelpButton() {
         view.showHelpDialog();
     }
+
     @Override
     public void clickDeleteVariantButton() {
         view.showDeleteDialog();
     }
+
     @Override
     public void clickHelpDialogNoButton() {
         view.helpDialogDismiss();
@@ -143,7 +177,7 @@ public class GamePresenter implements GameContract.Presenter {
 
     @Override
     public void clickHelpDialogYesButton() {
-        if (coin < 10){
+        if (coin < 10) {
             view.showToast();
             return;
         }
@@ -155,6 +189,7 @@ public class GamePresenter implements GameContract.Presenter {
             }
         }
         if (emptyIndexes.isEmpty()) return;
+
         Random random = new Random();
         int answerIndex;
         int variantIndex;
@@ -171,39 +206,37 @@ public class GamePresenter implements GameContract.Presenter {
         view.setTextAnswerButton(answerIndex, correctChar);
         _sbVariant.setCharAt(variantIndex, '*');
         view.deleteVariantButton(variantIndex);
+
         list.add(answerIndex);
         view.setCorrectBackground(list);
-    }
 
+        if (!_sbAnswer.toString().contains("#")) {
+            coin = coin + 30;
+            view.setCoin(coin);
+            view.showCorrectDialog();
+        }
+    }
     @Override
     public void clickDeleteDialogYesButton() {
-       if (coin < 5){
-           view.showToast();
-           return;
-       }
-        // Joriy savolning javobini olamiz
+        if (coin < 5) {
+            view.showToast();
+            return;
+        }
         String javob = model.getQuestionByIndex(this.index).getAnswer();
         List<Integer> notogriIndexlar = new ArrayList<>();
 
-        // Variantlardan javobda yo'q bo'lgan harflarni qidiramiz
         for (int i = 0; i < _sbVariant.length(); i++) {
             char hozirgiHarf = _sbVariant.charAt(i);
-            // Agar harf ishlatilmagan (* emas) va javobda yo'q bo'lsa
             if (hozirgiHarf != '*' && javob.indexOf(hozirgiHarf) == -1) {
                 notogriIndexlar.add(i);
             }
         }
-        // Agar noto'g'ri harflar topilmasa, metodni tugatamiz
         if (notogriIndexlar.isEmpty()) {
             return;
         }
-        // Tasodifiy bitta noto'g'ri harfni tanlaymiz
         Random random = new Random();
         int variantIndex = notogriIndexlar.get(random.nextInt(notogriIndexlar.size()));
-
-        // Tanlangan harfni o'chiramiz (* qo'yamiz)
         _sbVariant.setCharAt(variantIndex, '*');
-        // Viewga o'chirilgan harfni bildiramiz
         view.deleteVariantButton(variantIndex);
     }
 
@@ -222,7 +255,6 @@ public class GamePresenter implements GameContract.Presenter {
         int[] image = model.getQuestionByIndex(this.index).getImage();
         view.showImage(image[1]);
     }
-
     @Override
     public void clickImage3() {
         view.linerGone();
@@ -238,26 +270,18 @@ public class GamePresenter implements GameContract.Presenter {
         int[] image = model.getQuestionByIndex(this.index).getImage();
         view.showImage(image[3]);
     }
-
     @Override
     public void clickImage() {
         view.linerVisible();
         view.imageGone();
     }
 
-    public List<Integer> getList() {
-        return list;
-    }
-
-    public void setList(List<Integer> list) {
-        this.list = list;
-    }
-
-    public LocalStorage getStorage() {
-        return storage;
-    }
-
-    public void setStorage(LocalStorage storage) {
-        this.storage = storage;
+    @Override
+    public void save() {
+        storage.saveIndex(this.index);
+        storage.saveCoin(this.coin);
+        storage.saveAnswer(_sbAnswer.toString());
+        storage.saveCorrectAnswerIndexes(this.list);
+        storage.saveVariants(_sbVariant.toString());
     }
 }
