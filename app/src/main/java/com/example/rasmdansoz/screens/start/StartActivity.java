@@ -3,6 +3,7 @@ package com.example.rasmdansoz.screens.start;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -19,24 +20,20 @@ import com.example.rasmdansoz.screens.game.GameActivity;
 import com.example.rasmdansoz.screens.info.InfoActivity;
 import com.example.rasmdansoz.storage.LocalStorage;
 
+import java.util.Objects;
+
 public class StartActivity extends AppCompatActivity {
     private QuitDialog quitDialog;
     private LocalStorage storage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
         quitDialog = new QuitDialog(this);
         storage = LocalStorage.Companion.getInstance();
-
         AppCompatButton resume = findViewById(R.id.resume);
 
-        if (storage.getIndex() == 0){
-            resume.setVisibility(View.GONE);
-
-        }else {
-            resume.setVisibility(View.VISIBLE);
-        }
         findViewById(R.id.start).setOnClickListener(view -> {
             Intent intent = new Intent(this, GameActivity.class);
             startActivity(intent);
@@ -44,12 +41,12 @@ public class StartActivity extends AppCompatActivity {
         findViewById(R.id.quit).setOnClickListener(view -> {
             quitDialog.show();
         });
-       resume.setOnClickListener(v -> {
+        resume.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("id",1);
+            intent.putExtra("id", 1);
             startActivity(intent);
         });
-        findViewById(R.id.info).setOnClickListener(v ->{
+        findViewById(R.id.info).setOnClickListener(v -> {
             Intent intent = new Intent(this, InfoActivity.class);
             startActivity(intent);
         });
@@ -57,5 +54,15 @@ public class StartActivity extends AppCompatActivity {
             finish();
             quitDialog.dismiss();
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!storage.getResume()) {
+            findViewById(R.id.resume).setVisibility(View.GONE);
+        }else{
+            findViewById(R.id.resume).setVisibility(View.VISIBLE);
+        }
     }
 }

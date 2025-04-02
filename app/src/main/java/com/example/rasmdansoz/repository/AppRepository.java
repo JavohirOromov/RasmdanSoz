@@ -23,6 +23,7 @@ public class AppRepository {
         }
         return instance;
     }
+    //wgroyohglfge
     private void loadQuestions(){
         questions.add(new QuestionData(new int[]{R.drawable.meta1,R.drawable.meta2,R.drawable.meta3,R.drawable.meta4},"meta","qwermtyuiaoj"));
         questions.add(new QuestionData(new int[]{R.drawable.google1,R.drawable.google2,R.drawable.google3,R.drawable.google4},"google","wgroyohglfge"));

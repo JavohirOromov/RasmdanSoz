@@ -18,6 +18,7 @@ class LocalStorage private constructor(context: Context){
         private const val ANSWER = "answer"
         private const val CORRECT_INDEXES = "correct_indexes"
         private const val SAVED_VARIANTS = "saved_variants"
+        private const val RESUME = "res"
         private lateinit var instance: LocalStorage
 
         fun init(context: Context){
@@ -65,5 +66,11 @@ class LocalStorage private constructor(context: Context){
     }
     fun getVariant(): String?{
         return preferences.getString(SAVED_VARIANTS,"")
+    }
+    fun saveResume(res: Boolean){
+        editor.putBoolean(RESUME,res).apply()
+    }
+    fun getResume(): Boolean{
+       return preferences.getBoolean(RESUME,false)
     }
 }

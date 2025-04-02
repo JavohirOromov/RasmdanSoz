@@ -19,7 +19,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="10 ta tanga evaziga harf ochishga rozimisiz"
+        android:text="20 ta tanga evaziga harf ochishga rozimisiz"
         android:textAlignment="center"
         android:textSize="24sp"
         android:textStyle="bold"

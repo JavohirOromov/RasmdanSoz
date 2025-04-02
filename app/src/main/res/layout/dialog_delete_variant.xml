@@ -18,7 +18,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="5 ta tanga evazig bitta ortiqcha harfni olib tashlashga rozimisiz"
+        android:text="10 ta tanga evazig bitta ortiqcha harfni olib tashlashga rozimisiz"
         android:textSize="24sp"
         android:textStyle="bold"
         android:fontFamily="@font/prototype"

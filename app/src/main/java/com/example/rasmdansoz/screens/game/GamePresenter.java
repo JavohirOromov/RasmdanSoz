@@ -23,11 +23,12 @@ public class GamePresenter implements GameContract.Presenter {
     private int index;
     private StringBuilder _sbAnswer;
     private StringBuilder _sbVariant;
-    private int coin;
+    private int coin = 40;
     private List<Integer> list = new ArrayList<>();
     private LocalStorage storage = LocalStorage.Companion.getInstance();
 
     public GamePresenter(GameContract.View view) {
+        storage.saveResume(true);
         this.view = view;
         this.model = new GameModel();
         showQuestion();
@@ -42,18 +43,29 @@ public class GamePresenter implements GameContract.Presenter {
         this.index = storage.getIndex();
         this.coin = storage.getCoin();
         view.setCoin(this.coin);
-        view.setLevel("Daraja" + (this.index + 1));
+        view.setLevel("Daraja " + (this.index + 1));
         view.showQuestionImage(model.getQuestionByIndex(this.index).getImage());
         _sbAnswer = new StringBuilder(Objects.requireNonNull(storage.getAnswer()));
         _sbVariant = new StringBuilder(Objects.requireNonNull(storage.getVariant()));
         Log.d("TTT","" + _sbAnswer);
+        Log.d("TTT","" + _sbVariant);
+        String storageVariant =  model.getQuestionByIndex(this.index).getVariant();
+        view.showVariant(storageVariant);
         updateUIWithStoredAnswer();
         restoreBackgroundColors();
         updateVariantButtons();
+
+        String answer = model.getQuestionByIndex(this.index).getAnswer();
+
+        if (_sbAnswer.toString().equals(answer)) {
+            view.setCoin(this.coin);
+            view.showCorrectDialog();
+        }
+        if (!(_sbAnswer.toString().equals(answer)) && _sbAnswer.length() == answer.length() && !(_sbAnswer.toString().contains("#"))){
+            view.showWrongBackground(answer.length());
+        }
     }
     private void updateVariantButtons() {
-        view.showVariant(_sbVariant.toString());
-
         for (int i = 0; i < _sbVariant.length(); i++) {
             if (_sbVariant.charAt(i) == '*') {
                 view.hideVariantButton(i);
@@ -80,18 +92,19 @@ public class GamePresenter implements GameContract.Presenter {
             view.showQuestionImage(data.getImage());
             view.showAnswerButtonByLength(data.getAnswer().length());
             view.showVariant(data.getVariant());
+            Log.d("TTT", data.getVariant());
             adjustStringBuilder(data);
         } else {
             view.openLastScreen();
         }
     }
-
     private void adjustStringBuilder(QuestionData data) {
         _sbVariant = new StringBuilder(data.getVariant());
         _sbAnswer = new StringBuilder();
         for (int i = 0; i < data.getAnswer().length(); i++) {
             _sbAnswer.append("#");
         }
+        this.list.clear();
     }
 
     @Override
@@ -111,6 +124,7 @@ public class GamePresenter implements GameContract.Presenter {
         _sbAnswer.setCharAt(index, '#');
         view.startSoundAnswer();
         view.showVariantButton(ch, variantIndex);
+        Log.d("TTT","ch - >" + ch);
         view.unselectUserAnswer(index);
         view.showInitialButton(model.getQuestionByIndex(this.index).getAnswer().length());
         view.setCorrectBackground(list);
@@ -177,7 +191,7 @@ public class GamePresenter implements GameContract.Presenter {
 
     @Override
     public void clickHelpDialogYesButton() {
-        if (coin < 10) {
+        if (this.coin < 20) {
             view.showToast();
             return;
         }
@@ -201,24 +215,23 @@ public class GamePresenter implements GameContract.Presenter {
         } while (variantIndex == -1);
 
         _sbAnswer.setCharAt(answerIndex, correctChar);
-        coin = coin - 10;
-        view.UpdateCoin(coin);
+        this.coin = this.coin - 20;
+        view.UpdateCoin(this.coin);
         view.setTextAnswerButton(answerIndex, correctChar);
         _sbVariant.setCharAt(variantIndex, '*');
         view.deleteVariantButton(variantIndex);
-
         list.add(answerIndex);
         view.setCorrectBackground(list);
 
         if (!_sbAnswer.toString().contains("#")) {
-            coin = coin + 30;
-            view.setCoin(coin);
+            this.coin = this.coin + 30;
+            view.setCoin(this.coin);
             view.showCorrectDialog();
         }
     }
     @Override
     public void clickDeleteDialogYesButton() {
-        if (coin < 5) {
+        if (this.coin < 10) {
             view.showToast();
             return;
         }
@@ -238,6 +251,8 @@ public class GamePresenter implements GameContract.Presenter {
         int variantIndex = notogriIndexlar.get(random.nextInt(notogriIndexlar.size()));
         _sbVariant.setCharAt(variantIndex, '*');
         view.deleteVariantButton(variantIndex);
+        this.coin = this.coin - 10;
+        view.UpdateCoin(this.coin);
     }
 
     @Override

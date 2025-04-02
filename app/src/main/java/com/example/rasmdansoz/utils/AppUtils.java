@@ -8,3 +8,4 @@ package com.example.rasmdansoz.utils;
 public class AppUtils {
     public static final int MAX_COUNT = 5;
 }
+

@@ -16,7 +16,7 @@
         <activity
             android:name=".screens.info.InfoActivity"
             android:exported="false"
-            android:noHistory="true"
+            android:screenOrientation="portrait"
             />
         <activity
             android:name=".screens.last.LastActivity"
@@ -30,7 +30,6 @@
             android:name=".screens.start.StartActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:noHistory="true"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "RasmdanSo'z"
+rootProject.name = "Rasmdan So'z"
 include ':app'

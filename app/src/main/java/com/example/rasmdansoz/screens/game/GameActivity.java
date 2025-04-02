@@ -32,6 +32,7 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 
 public class GameActivity extends AppCompatActivity implements GameContract.View {
@@ -67,7 +68,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
             presenter = new GamePresenter(this, index);
             addClickEvents();
         } else {
-            if (storage.getIndex() == 0) {
+            if (!storage.getResume()) {
                 loadViews();
                 presenter = new GamePresenter(this);
                 addClickEvents();
@@ -79,19 +80,15 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
                     addClickEvents();
                 });
                 gameDialog.setNoButtonClickListener(() -> {
-                    Intent intent = new Intent(this, StartActivity.class);
-                    startActivity(intent);
+                    finish();
                     gameDialog.dismiss();
                 });
             }
         }
     }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent intent = new Intent(this, StartActivity.class);
-        startActivity(intent);
         finish();
     }
 
@@ -238,8 +235,6 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
 
     @Override
     public void openStartScreen() {
-        Intent intent = new Intent(this, StartActivity.class);
-        startActivity(intent);
         finish();
     }
 
@@ -259,6 +254,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
     public void showInitialButton(int length) {
         for (int i = 0; i < length; i++) {
             answerButtons.get(i).setBackgroundResource(R.drawable.bg_answer);
+            answerButtons.get(i).setClickable(true);
         }
     }
 
@@ -373,6 +369,7 @@ public class GameActivity extends AppCompatActivity implements GameContract.View
         for (Integer index : list) {
             if (index >= 0 && index < answerButtons.size()) {
                 answerButtons.get(index).setBackgroundResource(R.drawable.bg_correct);
+                answerButtons.get(index).setClickable(false);
             }
         }
     }
